@@ -4,7 +4,7 @@
           <header class="mb-4 lg:mb-6 not-format">
               <address class="flex items-center mb-6 not-italic">
                   <div class="inline-flex items-center mr-3 text-sm text-slate-800 dark:text-[#b4fb9a]">
-                      <img class="mr-4 w-16 h-16 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-2.jpg" alt="{{ $post->author->username }}">
+                      <img class="mr-4 w-16 h-16 rounded-full" src="{{ $post->author->avatar ? asset('storage/'. $post->author->avatar) : asset('image/default-avatar.jpg') }}" alt="{{ $post->author->username }}">
                       <div>
                           <a href="/posts?author={{ $post->author->username }}" rel="author" class="text-xl ms-1 font-bold text-slate-800 dark:text-white">{{ $post->author->username }}</a>
                           <a href="/posts?category={{ $post->category->slug }}" class="block">
@@ -18,13 +18,13 @@
               </address>
               <div class="flex gap-2 my-2 items-center">
                 <div class="flex items-center space-x-3 sm:space-x-4">
-                    <button type="button" class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                    <a  href ="/dashboard/{{ $post->slug }}/edit" class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                         <svg aria-hidden="true" class="mr-1 -ml-1 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
                             <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
                         </svg>
                         Edit
-                    </button>
+                    </a>
                    
                 </div>
                 <button type="button" class="inline-flex items-center text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
@@ -34,10 +34,9 @@
                     Delete
                 </button>
             </div>
-              <h1 class="mb-4 text-3xl font-extrabold leading-tight lg:mb-6 lg:text-4xl dark:text-white text-slate-800">{{ $post["title"] }}</h1>
+              <h1 class="mb-4 text-3xl font-extrabold leading-tight lg:mb-6 lg:text-4xl dark:text-white text-slate-800 uppercase">{{ $post->title }}</h1>
           </header>
-          <p class="lead text-slate-800">{{ $post['body'] }}</p>
-            <a href="/dashboard" class="text-base text-sky-800 hover:text-blue-900" style="text-decoration: none">&laquo; Back to Posts</a>
+          <div class="text-sm text-slate-900">{!! $post->body !!}</div>
       </article>
   </div>
 </main>

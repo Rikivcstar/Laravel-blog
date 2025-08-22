@@ -23,7 +23,7 @@ URL: https://flowbite.com/docs/components/typography/
           <header class="mb-4 lg:mb-6 not-format">
               <address class="flex items-center mb-6 not-italic">
                   <div class="inline-flex items-center mr-3 text-sm text-[#b4fb9a] dark:text-[#b4fb9a]">
-                      <img class="mr-4 w-16 h-16 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-2.jpg" alt="{{ $post->author->username }}">
+                      <img class="mr-4 w-16 h-16 rounded-full" src="{{ $post->author->avatar ? asset('storage/'. $post->author->avatar) : asset('image/default-avatar.jpg') }}" alt="{{ $post->author->nama }}" >
                       <div>
                           <a href="/posts?author={{ $post->author->username }}" rel="author" class="text-xl ms-1 font-bold text-[#b4fb9a] dark:text-white">{{ $post->author->username }}</a>
                           <a href="/posts?category={{ $post->category->slug }}" class="block">
@@ -37,7 +37,7 @@ URL: https://flowbite.com/docs/components/typography/
               </address>
               <h1 class="mb-4 text-3xl font-extrabold leading-tight lg:mb-6 lg:text-4xl dark:text-white text-[#b4fb9a]">{{ $post["title"] }}</h1>
           </header>
-          <p class="lead text-slate-100">{{ $post['body'] }}</p>
+          <p class="lead text-white">{!! $post->body !!}</p>
             <a href="/posts" class="text-base text-[#b4fb9a] ">&laquo; Back to Posts</a>
       </article>
   </div>

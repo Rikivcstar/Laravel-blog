@@ -55,12 +55,13 @@ class PostDashboardController extends Controller
         Validator::make($request->all(),[
                 'title' => 'required|unique:posts|max:100|min:5',
                 'category_id' => 'required',
-                'body' => 'required'
+                'body' => 'required|min:50'
             ],
             [
                 'title.required' => 'Field :attribute harus di isi',
                 'category_id.required' => 'Pilih salah satu Category',
-                'body.required' => 'Field :attribute  wajib di isi'
+                'body.required' => 'Field :attribute wajib di isi',
+                'body.min' => 'Tulisan harus :min karakter atau lebih'
             ])->validate();
 
         //Create data post
@@ -87,17 +88,38 @@ class PostDashboardController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Post $post)
     {
         //
+
+        return view('dashboard.edit', ['post' => $post]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        // melakukan validation
+        $request->validate( 
+              [ 
+                'title' => 'required|max:100|min:5|unique:posts,title' . $post->id,
+                'category_id' => 'required',
+                'body' => 'required'
+            ]);
+
+        // melakukan update data pada post
+        $post->update([
+            'title' => $request->title,
+            'author_id' => Auth::user()->id,
+            'category_id' => $request->category_id,
+            'slug' => Str::slug($request->title),
+            'body' => $request->body
+        ]);
+
+        return redirect('/dashboard')->with(['success' => 'your post has been Updated!']);
+
+     
     }
 
     /**

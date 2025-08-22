@@ -5,6 +5,7 @@ use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use Pest\Plugins\Profile;
 
 // Route untuk halaman beranda ('/')
 Route::get('/', function (Category $category) {
@@ -78,6 +79,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/dashboard', [PostDashboardController::class, 'store']);
     Route::get('/dashboard/create', [PostDashboardController::class, 'create']);
     Route::delete('/dashboard/{post:slug}', [PostDashboardController::class, 'destroy']);
+    Route::get('/dashboard/{post:slug}/edit', [PostDashboardController::class, 'edit']);
+    Route::patch('/dashboard/{post:slug}', [PostDashboardController::class, 'update']);
     Route::get('/dashboard/{post:slug}', [PostDashboardController::class, 'show']);
 });
 
@@ -86,6 +89,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/upload', [ProfileController::class, 'upload']);
 });
 
 require __DIR__.'/auth.php';

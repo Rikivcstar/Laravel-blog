@@ -27,8 +27,8 @@
                 <button type="button" @click="isOpen = !isOpen" class="relative flex max-w-xs items-center rounded-full p-1 text-sm focus:ring-2 focus:ring-green-900 focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                   <span class="absolute -inset-1.5"></span>
                   <span class="sr-only">Open user menu</span>
-                  <img class="size-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-                  <div class="text-white font-medium text-sm ms-2 p-2">{{ Auth::user()->name }}</div>
+                  <img class="size-8 rounded-full" src="{{ Auth::user()->avatar ? asset('storage/'. Auth::user()->avatar) : asset('image/default-avatar.jpg') }}" alt="{{ Auth::user()->username }}" >
+                  <div class="text-white font-medium text-sm ms-2 p-2">{{ Auth::user()->username }}</div>
                     <div class="ms-1 text-white">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -94,10 +94,10 @@
         @if(Auth::check())
         <div class="flex items-center px-5">
           <div class="shrink-0">
-            <img class="size-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+            <img class="size-10 rounded-full" src="{{ Auth::user()->avatar ? asset('storage/'. Auth::user()->avatar) : asset('image/default-avatar.jpg') }}" alt="{{ Auth::user()->username }}">
           </div>
           <div class="ml-3">
-            <div class="text-base/5 font-medium text-white">{{ Auth::user()->name }}</div>
+            <div class="text-base/5 font-medium text-white">{{ Auth::user()->username }}</div>
           </div>
       
         </div>

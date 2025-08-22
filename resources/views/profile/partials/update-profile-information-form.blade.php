@@ -1,3 +1,11 @@
+@push('style')
+    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+    <link
+    href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
+    rel="stylesheet"
+/>
+@endpush
+
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900">
@@ -13,7 +21,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
 
@@ -53,6 +61,21 @@
             @endif
         </div>
 
+        {{-- avatar --}}
+        <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="avatar">Upload file</label>
+            <input class="@error('avatar') 
+                         bg-red-50 border-red-500 text-red-700 placeholder-red-700 focus:ring-red-500 focus:border-red-500 @enderror block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="avatar_help" id="avatar" type="file" name="avatar" accept="image/png, image/jpg, image/jpeg">
+            <div class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="avatar_help">.jpg or .png</div>
+             @error('avatar')
+                         <p class="mt-2 text-xs text-red-600 dark:text-red-500">{{ $message }}</p>
+                         @enderror
+         
+        </div>
+        <div>
+               <img class="w-20 h-20 rounded-full" src="{{ $user->avatar ? asset('storage/'. $user->avatar) : asset('image/default-avatar.jpg') }}" alt="{{ $user->name }}" id="avatar-preview">
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
@@ -68,3 +91,54 @@
         </div>
     </form>
 </section>
+
+
+@push('script')
+
+    <script>
+    const input = document.getElementById('avatar');
+  const previewPhoto = () => {
+    const file = input.files;
+    if (file) {
+      const fileReader = new FileReader();
+      const preview = document.getElementById('avatar-preview');
+      fileReader.onload = function(event) {
+        preview.setAttribute('src', event.target.result);
+      }
+      fileReader.readAsDataURL(file[0]);
+    }
+  }
+  input.addEventListener("change", previewPhoto);
+</script>
+<script src="https://unpkg.com/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.js"></script>
+<script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
+<script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+<script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+<script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+<script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+<script>
+
+    FilePond.registerPlugin(FilePondPluginFileValidateType);
+    FilePond.registerPlugin(FilePondPluginFileValidateSize);
+    FilePond.registerPlugin(FilePondPluginImagePreview);
+    FilePond.registerPlugin(FilePondPluginImageTransform);
+    FilePond.registerPlugin(FilePondPluginImageResize);
+    
+    // Get a reference to the file input element
+    const inputElement = document.querySelector('#avatar');
+    // Create a FilePond instance
+    const pond = FilePond.create(inputElement, {
+        acceptedFileTypes: ['image/png','image/jpg', 'image/jpeg'],
+        maxFileSize: '3MB',
+        imageResizeTargetWidth: '600',
+        imageResizeMode: 'contain',
+        imageResizeUpscale: false,
+        server: {
+            url: 'upload/',
+            headers: {
+                'X-CSRF-TOKEN' : '{{ csrf_token() }}'
+            }
+        }
+    });
+</script>
+@endpush

@@ -38,13 +38,13 @@
         <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
     </div>
 </form>
-<div class="font-bold text-green-400">
+<div class="font-bold text-green-400 ">
   {{ $posts->links() }}
 </div>
       <div class=" mt-4 grid gap-8 lg:grid-cols-3 md:grid-cols-2">
         @forelse ($posts as $post )
-          <article class="p-6 bg-[#24640c] rounded-lg border border-slate-900 shadow-md dark:bg-gray-800 dark:border-gray-700">
-              <div class="flex justify-between items-center mb-5 text-slate-50">
+          <article class="p-6 bg-white rounded-lg border border-slate-900 shadow-md dark:bg-gray-800 dark:border-gray-700">
+              <div class="flex justify-between items-center mb-5 text-slate-700">
                 <a href="/posts?category={{ $post->category->slug }}">
                   <span class="{{ $post->category->color }} text-slate-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
                       {{ $post->category->nama }}
@@ -52,18 +52,18 @@
                 </a>
                   <span class="text-sm font-medium">{{ $post->created_at->diffForHumans() }}</span>
               </div>
-              <h2 class="mb-2 text-2xl font-bold tracking-tight text-slate-100 dark:text-white"><a href="/posts/{{ $post['slug'] }}">{{ $post['title'] }}</a></h2>
-              <p class="mb-5 font-light text-slate-100 dark:text-gray-400">{{ Str::limit( $post["body"], 100) }}</p>
+              <h2 class="mb-2 text-2xl font-bold tracking-tight text-slate-700 dark:text-white"><a href="/posts/{{ $post['slug'] }}">{{ $post['title'] }}</a></h2>
+              <p class="mb-5 font-light text-slate-600 dark:text-gray-400">{!! Str::limit( $post["body"], 150) !!}</p>
               <div class="flex justify-between items-center">
                 <a href="/posts?author={{ $post->author->username }}" class="text-slate-50 text-sm font-medium">
-                  <div class="flex items-center space-x-4">
-                      <img class="w-7 h-7 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png" alt="{{ $post->author->username }}" />
-                      <span class="font-medium text-xs dark:text-white">
+                  <div class="flex items-center mt-4 space-x-4">
+                      <img class="w-7 h-7 rounded-full" src="{{ $post->author->avatar ? asset('storage/'. $post->author->avatar) : asset('image/default-avatar.jpg') }}" alt="{{ $post->author->username }}" />
+                      <span class="font-medium text-xs dark:text-white text-slate-800">
                           {{ $post->author->username }}
                       </span>
                   </div>
                   </a>
-                  <a href="/posts/{{ $post["slug"] }}" class="inline-flex text-xs items-center font-medium text-slate-200 dark:text-primary-500 hover:underline">
+                  <a href="/posts/{{ $post["slug"] }}" class="inline-flex text-xs items-center font-medium text-slate-700 dark:text-primary-500 hover:underline">
                       Read more
                       <svg class="ml-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                   </a>
